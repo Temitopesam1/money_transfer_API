@@ -1,6 +1,7 @@
 const axios = require('axios');
 const https = require('https');
 const qs = require('querystring');
+const { v4: uuidv4 } = require('uuid');
 
 const agent = new https.Agent({
     rejectUnauthorized: false,
@@ -13,7 +14,9 @@ class Transfer {
     initiateTransfer = async (req, res) => {
         
         try {
-            const body = qs.stringify(req.body);
+            const body = req.body;
+            body['reference'] = uuidv4();
+            console.log(body);
 
             const config = {
                 method: 'post',
@@ -25,7 +28,7 @@ class Transfer {
                     'Authorization': `Bearer ${process.env.SECRET}`, 
                   'Cookie': '__cf_bm=tHUgf3kcySKrWyBIHf3lMZgxSbMmxC5DKG4P76uwHyM-1700715897-0-AdQREXL6TtZZ9Z8CokuL2lE/Op7pi6ao6MqLWube1c/KnmMZugs6pUTcKqtz42twA9aJvcIGNNmc60SZovxYluE=; sails.sid=s%3An48s7-wUVbvACW_Ipc9ipinNagpeHddH.W12xkkKlXJqxScSQHFAZMzVNvKubk4ZYpg2xj1GfMkA'
                 },
-                data: body,
+                data: qs.stringify(body),
                 httpsAgent: agent,
             }
             const { data } = await axios.request(config)
