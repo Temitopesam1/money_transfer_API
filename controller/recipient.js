@@ -6,7 +6,7 @@ const agent = new https.Agent({
     rejectUnauthorized: false,
 });
 
-const secret = process.env.SECRET || "sk_test_74d00f113a4eccad19160a24e9d7355730a5d3c0";
+const secret = process.env.SECRET;
 
 
 class Recipient {
